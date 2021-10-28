@@ -28,7 +28,10 @@ __________________________________________________
 
 # important considerations 
 
-1 .- there is a limit of the deployments when we are usign github actions it is important to consierar include some runners for the deployments
+1 .- There is a limit and some considerations of the deployments when we are usign github actions it is important to include some *runners* for the deployments on our enviroments
+
+
+https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration
 
 2.- For the yml code is imporant to inlcude always 
 
