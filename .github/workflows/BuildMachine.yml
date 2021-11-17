@@ -18,6 +18,8 @@ jobs:
           projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
           nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
           nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
+      - run: echo "$slnPath"
+
 
   Setup-Workspace:
     name: Setup Workspace
@@ -62,7 +64,7 @@ jobs:
 
     steps:
       - run: echo "Build DLL"
-      - run: utils.buildVSSolution(slnPath, "Release", "Any CPU", "one")
+      - run: utils.buildVSSolution($slnPath, "Release", "Any CPU", "one")
 
   build2:
     name: Build DLL 2
