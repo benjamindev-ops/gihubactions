@@ -30,3 +30,25 @@ jobs:
       - name: WorkSpace setup
         run: echo "Setup-Workspace"
 
+  Checkout-Code:
+    name: Checkout Code
+    needs: Setup-Workspace
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Checkout-Code" && ls -flrats
+
+
+  Prepare-For-Build:
+    name: Prepare For Build
+    needs: Checkout-Code
+    runs-on: [ windows-latest ]
+
+    steps:
+      - uses: actions/checkout@master
+      - run: echo "Prepare-For-Build" && echo "Restore NuGet Packages"
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.x'
+      - run: nuget restore $slnPath
