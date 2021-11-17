@@ -36,7 +36,7 @@ jobs:
     runs-on: [ ubuntu-latest ]
 
     steps:
-      - run: git clone https://${{ secrets.GIT_ACCESS_TOKEN }}@github.com:benjamindev-ops/relayhealth.encryptiondecryption.git ${secrets.WORKSPACE}
+      - run: git clone https://${{ secrets.GIT_ACCESS_TOKEN }}@github.com:benjamindev-ops/relayhealth.encryptiondecryption.git 
       - run: echo "Checkout-Code" && ls -flrats
 
 
