@@ -1,0 +1,60 @@
+name: BuildMachine
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  .NET_BuildMachine:
+    name: .NET BuildMachine
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Install dependencies
+        run: echo "Push_NuGet_Package"
+
+
+  Setup_Workspace:
+    name: Setup Workspace
+    needs: .NET_BuildMachine
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push_NuGet_Package"
+
+
+  Checkout_Code:
+    name: Checkout Code
+    needs: Setup_Workspace
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push_NuGet_Package"
+
+
+  Prepare_For_Build:
+    name: Prepare For Build
+    needs: Checkout_Code
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push_NuGet_Package"
+      
+  Build:
+    name: Build
+    needs: Prepare_For_Build
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push_NuGet_Package"
+
+  Push_NuGet_Package:
+    name: Push_NuGet_Package
+    needs: Build
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push_NuGet_Package"
+      
