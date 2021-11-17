@@ -87,5 +87,5 @@ jobs:
 
     steps:
       - run: echo "Push-NuGet-Package"
-             dotnet nuget push ./<project>/out/*.nupkg --skip-duplicate --no-symbols true
+       #      dotnet nuget push ./<project>/out/*.nupkg --skip-duplicate --no-symbols true
 
