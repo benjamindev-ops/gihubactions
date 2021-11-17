@@ -1,0 +1,40 @@
+name: BuildMachine
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  NET-BuildMachine:
+    name: .NET BuildMachine
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Install dependencies
+        env:
+          slnPath: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.sln"
+          projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
+          nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
+          nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
+      - run: echo "$slnPath"
+
+
+  Setup-Workspace:
+    name: Setup Workspace
+    needs: NET-BuildMachine
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Setup-Workspace"
+      - run: ls
+
+
+  Checkout-Code:
+    name: Checkout Code
+    needs: Setup-Workspace
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Checkout-Code"
