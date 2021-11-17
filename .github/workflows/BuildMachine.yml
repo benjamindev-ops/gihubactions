@@ -14,10 +14,10 @@ jobs:
     steps:
       - name: Install dependencies
         env:
-          slnPath: ${{"$WORKSPACE"+"\\RelayHealth.EncryptionDecryption.sln"}}
-          projectFile: "$WORKSPACE\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
-          nupkgFile: "$WORKSPACE\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
-          nupkgSymbolsFile: "$WORKSPACE\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
+          slnPath: "{{$WORKSPACE}}\\RelayHealth.EncryptionDecryption.sln"
+          projectFile: "{{$WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
+          nupkgFile: "{{$WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
+          nupkgSymbolsFile: "{{$WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
         run: 
           echo "$slnPath\n$projectFile\n$nupkgFile\n$nupkgSymbolsFile"
 
