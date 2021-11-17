@@ -15,8 +15,12 @@ jobs:
       - name: Install dependencies
         env:
           WORKSPACE: ${{ secrets.WORKSPACE }}
+          slnPath: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.sln"
+          projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
+          nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
+          nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
         run: 
-          echo "$WORKSPACE"
+          echo "$WORKSPACE\n$slnPath\n$projectFile\n$nupkgFile\nnupkgSymbolsFile"
 
   Setup-Workspace:
     name: Setup Workspace
