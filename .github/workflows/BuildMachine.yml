@@ -28,8 +28,7 @@ jobs:
 
     steps:
       - name: WorkSpace setup
-      - run: echo "Setup-Workspace"
-
+        run: echo "Setup-Workspace"
 
   Checkout-Code:
     name: Checkout Code
@@ -37,7 +36,6 @@ jobs:
     runs-on: [ ubuntu-latest ]
 
     steps:
-      - name: Checkout
       - run: echo "Checkout-Code" && ls -flrats
 
 
@@ -47,17 +45,14 @@ jobs:
     runs-on: [ windows-latest ]
 
     steps:
-      - run: echo "Prepare-For-Build"
-             echo "Restore NuGet Packages"
       - uses: actions/checkout@master
+      - run: echo "Prepare-For-Build" && echo "Restore NuGet Packages"
       - uses: nuget/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NuGetAPIKey }}
           nuget-version: '5.x'
       - run: nuget restore $slnPath
-
-
-      
+  
   Build:
     name: Build DLL
     needs: Prepare-For-Build
