@@ -18,6 +18,15 @@ jobs:
           projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
           nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
           nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
-      - run: echo "$slnPath"
+        run: echo "$slnPath"
 
+
+  Setup-Workspace:
+    name: Setup Workspace
+    needs: NET-BuildMachine
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: WorkSpace setup
+        run: echo "Setup-Workspace"
 
