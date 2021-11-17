@@ -14,13 +14,10 @@ jobs:
     steps:
       - name: Install dependencies
         env:
-          WORKSPACE: ${{ secrets.WORKSPACE }}
           slnPath: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.sln"
           projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
           nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
           nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
-        run: 
-          echo "$WORKSPACE\n$slnPath\n$projectFile\n$nupkgFile\nnupkgSymbolsFile"
 
   Setup-Workspace:
     name: Setup Workspace
@@ -29,6 +26,7 @@ jobs:
 
     steps:
       - run: echo "Setup-Workspace"
+      - run: ls
 
 
   Checkout-Code:
@@ -43,19 +41,45 @@ jobs:
   Prepare-For-Build:
     name: Prepare For Build
     needs: Checkout-Code
-    runs-on: [ ubuntu-latest ]
+    runs-on: [ windows-latest ]
 
     steps:
       - run: echo "Prepare-For-Build"
+             echo "Restore NuGet Packages"
+      - uses: actions/checkout@master
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.x'
+      - run: nuget restore $slnPath
+
+
       
   Build:
-    name: Build
+    name: Build DLL
     needs: Prepare-For-Build
     runs-on: [ ubuntu-latest ]
 
     steps:
-      - run: echo "Build"
+      - run: echo "Build DLL"
+      - run: utils.buildVSSolution(slnPath, "Release", "Any CPU", "one")
 
+  build2:
+    name: Build DLL 2
+    needs: Prepare-For-Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+    
+    # dotnet build
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+  
   Push-NuGet-Package:
     name: Push-NuGet-Package
     needs: Build
@@ -63,4 +87,5 @@ jobs:
 
     steps:
       - run: echo "Push-NuGet-Package"
-      
+        run: dotnet nuget push ./<project>/out/*.nupkg --skip-duplicate --no-symbols true
+
