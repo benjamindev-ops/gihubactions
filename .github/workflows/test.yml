@@ -52,3 +52,36 @@ jobs:
           nuget-api-key: ${{ secrets.NuGetAPIKey }}
           nuget-version: '5.x'
       - run: nuget restore $slnPath
+  
+  Build:
+    name: Build DLL
+    needs: Prepare-For-Build
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Build DLL"
+      - run: utils.buildVSSolution($slnPath, "Release", "Any CPU", "one")
+
+  build2:
+    name: Build DLL 2
+    needs: Prepare-For-Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+    
+    # dotnet build
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+  
+  Push-NuGet-Package:
+    name: Push-NuGet-Package
+    needs: Build
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - run: echo "Push-NuGet-Package"
