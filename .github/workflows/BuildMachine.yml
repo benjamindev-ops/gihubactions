@@ -18,7 +18,7 @@ jobs:
           projectFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption\\RelayHealth.EncryptionDecryption.csproj"
           nupkgFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
           nupkgSymbolsFile: "${{secrets.WORKSPACE}}\\RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
-      - run: echo "$slnPath"
+        run: echo "$slnPath"
 
 
   Setup-Workspace:
@@ -27,8 +27,8 @@ jobs:
     runs-on: [ ubuntu-latest ]
 
     steps:
+      - name: WorkSpace setup
       - run: echo "Setup-Workspace"
-      - run: ls
 
 
   Checkout-Code:
@@ -37,7 +37,8 @@ jobs:
     runs-on: [ ubuntu-latest ]
 
     steps:
-      - run: echo "Checkout-Code"
+      - name: Checkout
+      - run: echo "Checkout-Code" && ls -flrats
 
 
   Prepare-For-Build:
