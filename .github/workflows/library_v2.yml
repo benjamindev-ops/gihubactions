@@ -10,11 +10,11 @@ jobs:
   NET-BuildMachine:
     name: .NET BuildMachine, build, pack and deploy
     env:
-    
-      slnPath: "RelayHealth.EncryptionDecryption.sln"
-      projectFile: "RelayHealth.EncryptionDecryption/RelayHealth.EncryptionDecryption.csproj"
-      nupkgFile: "RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
-      nupkgSymbolsFile: "RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
+      project_name: ${{ secret.projectname }}
+      slnPath: "${{ secret.projectname }}.sln"
+      projectFile: "${{ secret.projectname }}/${{ secret.projectname }}.csproj"
+      nupkgFile: "${{ secret.projectname }}.*.*.*.*.nupkg"
+      nupkgSymbolsFile: "${{ secret.projectname }}.*.*.*.*.symbols.nupkg"
       
       id:  "id_var"
       version: "0.0.0.1"
@@ -40,7 +40,7 @@ jobs:
       run: curl.exe --output move_env.py --url https://raw.githubusercontent.com/benjamindev-ops/auxiliar/main/move_env.py
             
     - name: execute py change env 
-      run: python3 -c "import move_env; print(move_env.change_name('RelayHealth.EncryptionDecryption.nuspec'))"
+      run: python3 -c "import move_env; print(move_env.change_name('${{ secret.projectname }}.nuspec'))"
       
     - name: validate path
       run: dir
@@ -48,7 +48,7 @@ jobs:
     - name: Display the file content
       run: |
         import os
-        nuspec_raw = os.popen("cat RelayHealth.EncryptionDecryption.nuspec").read()
+        nuspec_raw = os.popen("cat ${{ secret.projectname }}.nuspec").read()
         print(nuspec_raw)
       shell: python
 
