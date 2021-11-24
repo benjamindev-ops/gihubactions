@@ -1,0 +1,89 @@
+name: BuildMachine-steps
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  NET-BuildMachine:
+    name: .NET BuildMachine, build, pack and deploy
+    env:
+      project_nuspec: "RelayHealth.EncryptionDecryption.nuspec"
+
+      slnPath: "RelayHealth.EncryptionDecryption.sln"
+      projectFile: "RelayHealth.EncryptionDecryption/RelayHealth.EncryptionDecryption.csproj"
+      nupkgFile: "RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
+      nupkgSymbolsFile: "RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
+
+      id:  "id_var"
+      version: "0.0.0.1"
+      title: "title_var"
+      authors: "authors_var"
+      owners: "owners_var"
+      description: "description_var"
+
+
+    runs-on: windows-latest
+
+
+    steps:
+## GIT
+    - uses: actions/checkout@v2
+
+## Python    
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+            python-version: 3.8
+    - name: download script
+      run: curl.exe --output move_env.py --url https://raw.githubusercontent.com/benjamindev-ops/auxiliar/main/move_env.py
+
+    - name: execute py change env 
+      #run: python3 -c "import move_env; print(move_env.change_name('RelayHealth.EncryptionDecryption.nuspec'))"
+      run: python3 -c "import move_env; print(move_env.change_name('${{ env.project_nuspec }}'))"
+
+    - name: validate path
+      run: dir
+
+    - name: Display the file content
+      run: |
+        import os
+        nuspec_raw = os.popen("cat ${{ env.project_nuspec }}").read()
+        print(nuspec_raw)
+      shell: python
+
+## .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x    
+
+  ## Preapre Enviroment
+
+    - name: Add nuget.org as nuget package source
+      run: dotnet nuget remove source nuget.org && dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+
+    - name: Restore dependencies
+      run: nuget restore  ${{ env.slnPath }}
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+  ## BUILD 
+
+    - name: Build app for release
+      run: msbuild ${{ env.slnPath }} -verbosity:minimal -property:Configuration=Release -property:Platform="Any CPU" -clp:ErrorsOnly
+
+  ## PACKAGE
+
+    - name: Nuget package
+      run: nuget pack -IncludeReferencedProjects -Prop Configuration=Release -Symbols
+
+  ## PUSH 
+
+
+    - name: PushNuget
+      run:  echo "push"
+     # run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
