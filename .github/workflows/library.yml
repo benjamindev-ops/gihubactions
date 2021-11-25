@@ -10,19 +10,18 @@ jobs:
   NET-BuildMachine:
     name: .NET BuildMachine, build, pack and deploy
     env:
-      project_nuspec: "RelayHealth.EncryptionDecryption.nuspec"
+      project_nuspec: ${{ secrets.PROJECTNUSPEC}}
+      slnPath: ${{ secrets.SLNPATH }}
+      projectFile: ${{ secrets.PROJECTFILE }}
+      nupkgFile: ${{ secrets.NUPKGFILE }}
+      nupkgSymbolsFile: ${{ secrets.NUPKGSYMBOLSFILE }}
 
-      slnPath: "RelayHealth.EncryptionDecryption.sln"
-      projectFile: "RelayHealth.EncryptionDecryption/RelayHealth.EncryptionDecryption.csproj"
-      nupkgFile: "RelayHealth.EncryptionDecryption.*.*.*.*.nupkg"
-      nupkgSymbolsFile: "RelayHealth.EncryptionDecryption.*.*.*.*.symbols.nupkg"
-
-      id:  "id_var"
-      version: "0.0.0.1"
-      title: "title_var"
-      authors: "authors_var"
-      owners: "owners_var"
-      description: "description_var"
+      id:  ${{ secrets.ID }}
+      version: ${{ secrets.VERSION }}
+      title: ${{ secrets.TITLE }}
+      authors: ${{ secrets.AUTHORS }}
+      owners: ${{ secrets.OWNERS }}
+      description: ${{ secrets.DESCRIPTION }}
 
 
     runs-on: windows-latest
