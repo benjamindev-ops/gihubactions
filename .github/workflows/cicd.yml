@@ -6,4 +6,9 @@ jobs:
     name: Hello world action
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hi from the pipeline"
+     - name: hello
+       run: echo "Hi from the pipeline" > hola.txt
+       
+     - name: Display the file content
+       run: cat hola
+       shell: bash
