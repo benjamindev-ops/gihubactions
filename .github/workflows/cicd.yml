@@ -10,5 +10,5 @@ jobs:
        run: echo "Hi from the pipeline" > hola.txt
        
      - name: Display the file content
-       run: cat hola
+       run: cat hola.txt
        shell: bash
